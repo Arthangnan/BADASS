@@ -1,0 +1,19 @@
+NAME := 'aattali'
+
+RED := '\033[1;31m'
+GREEN := '\033[1;32m'
+YELLOW := '\033[1;33m'
+BLUE := '\033[1;34m'
+RESET := '\033[0m'
+
+default: build
+
+build:
+  @echo "{{BLUE}}██████████████████████ Building Images ███████████████████████{{RESET}}"
+  docker build -t router-{{NAME}} -f Dockerfile.router .
+  docker build -t host-{{NAME}} -f Dockerfile.host .
+  @echo "{{RED}}╔════════════════════════════║NOTE:║════════════════════════╗{{RESET}}"
+  @echo "{{RED}}║   {{BLUE}} You can see start the containers using {{YELLOW}}gns3            {{RED}}║{{RESET}}"
+  @echo "{{RED}}╚═══════════════════════════════════════════════════════════╝{{RESET}}"
+
+re: build

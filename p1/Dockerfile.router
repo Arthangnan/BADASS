@@ -1,0 +1,6 @@
+# syntax=docker/dockerfile:1
+
+FROM quay.io/frrouting/frr:10.2.1
+
+COPY ./config/daemons /etc/frr/daemons
+COPY ./config/vtysh.conf /etc/frr/vtysh.conf
