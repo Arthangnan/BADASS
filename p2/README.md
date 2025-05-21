@@ -3,14 +3,17 @@ We are going to do configure the `/etc/network/interfaces` provided by **GNS3**,
 
 Routers uses 2 interfaces, `eth1` for the clients and `eth0` for the switch.
 The `eth1` interface will not be configured with **GNS3**, since it doesn't have any ip address.
-|      hostname      | interfaces |     IP      | gateway  |
-|--------------------|------------|-------------|----------|
-|  host_aattali-1  |    eth1    | 22.10.0.2/24 | 22.10.0.1 |
-|  host_aattali-2  |    eth1    | 22.10.0.3/24 | 22.10.0.1 |
-| router_aattali-1 |    eth1    |  |          |
-| router_aattali-1 |    eth0    | 99.10.1.1/24 |          |
-| router_aattali-2 |    eth1    |  |          |
-| router_aattali-2 |    eth0    | 99.10.1.2/24 |          |
+|      hostname    | interfaces  |     IP       | gateway   |
+|------------------|-------------|--------------|-----------|
+|  host_aattali-1  |    eth1     | 22.10.0.2/24 | 22.10.0.1 |
+|  host_aattali-2  |    eth1     | 22.10.0.3/24 | 22.10.0.1 |
+| router_aattali-1 |    eth1     |              |           |
+| router_aattali-1 |    eth0     | 99.10.1.1/24 |           |
+| router_aattali-2 |    eth1     |              |           |
+| router_aattali-2 |    eth0     | 99.10.1.2/24 |           |
+
+> [!CAUTION]
+> When operating inside the **routers**, switch to `bash` to use a compliant `iptools2` cli.
 
 ## Unicast with static flooding
 Since we are not using **multicast**, we need to configure every **VTEP**s so they can be included in the loop.
@@ -56,4 +59,31 @@ ip a add 22.10.0.1/24 dev br0
 ```
 
 ## Multicast
-todo
+When using **multicast mode**, the **BUM** traffic is handled way more easily and efficently. The **VTEP**s are joining themselves into the *multicast group*; when a **VTEP** recieves a **BUM frame** from a local host, it sends the *IP packet* to the *multicast group* - all **VTEP**s inside this *multicast group* will receive it.
+
+We do not need any static configuration nor any flooding.
+### VXLAN and bridge creation
+#### VXLAN
+```sh
+ip link add vxlan10 type vxlan id 10 dstport 4789 local 99.10.1.1 group 239.22.22.22 dev eth0
+```
+The `group` parameter specifies the *multicast group*, which needs to be a valid **multicast address**. `dev` parameter indicates the **interface** associated with the **VXLAN**, which is needed in *multicast mode*.
+#### Bridge
+Nothing new here.
+```sh
+ip link add br0 type bridge
+ip link set vxlan10 master br0
+ip link set eth1 master br0
+```
+### Interfaces and bridge configuration
+The **FDB** configuration for the **bridge** is not necessary anymore.
+#### Interfaces activation
+We activate both the **bridge** and the **VXLAN**.
+```sh
+ip link set br0 up
+ip link set vxlan10 up
+```
+#### IP assignment for the bridge
+```sh
+ip a add 22.10.0.1/24 dev br0
+```
