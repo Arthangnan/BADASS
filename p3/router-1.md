@@ -1,0 +1,35 @@
+!
+zebra
+    no ipv6 forwarding
+!
+interface eth0
+    ip address 10.10.0.1/29
+!
+interface eth1
+    ip address 10.10.0.2/29
+!
+interface eth2
+    ip address 10.10.0.3/29
+!
+interface lo
+    ip address 1.1.1.1/32
+!
+router bgp 8
+    no bgp default ipv4-unicast
+    neighbor leafs peer-group
+    neighbor leafs remote-as 8
+    neighbor leafs capability extended-nexthop
+    neighbor leafs update-source lo
+    neighbor 2.2.2.2 peer-group leafs
+    neighbor 3.3.3.3 peer-group leafs
+    neighbor 4.4.4.4 peer-group leafs
+    !
+    address-family l2vpn evpn
+        neighbor leafs activate
+        neighbor leafs route-reflector-client
+    exit-address-family
+    !
+!
+router ospf
+    network 0.0.0.0/0 area 0
+!
