@@ -3,7 +3,7 @@ We are going to do configure the `/etc/network/interfaces` provided by **GNS3**,
 
 **Leafs** uses *2 interfaces*, one for communicating with their host, and other one for the **route reflector**.
 The **RR** has *3 interfaces* connected to the 3 **leafs**.
-Only the intrface for the hosts will be configured with **GNS3**, the configuration for the routers will be done via **frrouting**.
+Only the intrface for the hosts will be configured with **GNS3**, the configuration for the routers will be done via **FRRouting**.
 |      hostname   | interfaces  |     IP       | gateway   |
 |-----------------|-------------|--------------|-----------|
 | host-aattali-1  |    eth1     | 22.10.0.2/24 | 22.10.0.1 |
@@ -28,7 +28,7 @@ Only the intrface for the hosts will be configured with **GNS3**, the configurat
 
 ## Route reflector
 Our goal is to establish a **BGP peer** in **EVPN mode**, which will serves as a **route reflector**, permitting us to avoid a *full-mesh layout* between each **routers**. The **underlay** routing will be done with **OSPF**, using *loopback addresses* in the `1.1.1.0/29` range.
-### Frrouting configuration
+### FRRouting configuration
 #### Interfaces
 We disable **IPv6 forwarding** since we are forced to only use **OSPFv2**, which doesn't have **IPv6** support.
 ```sh
@@ -91,7 +91,7 @@ ip link set vxlan10 up
 ip link set br0 up
 ip a add 22.10.0.1/24 dev br0
 ```
-### Frrouting configuration
+### FRRouting configuration
 #### Interfaces
 The configuration is similar to our **RR**, but we specify which **interface** will be managed by **OSPF**, since our interface linked to our host need to be **outside** this **routing scheme**.
 ```sh
