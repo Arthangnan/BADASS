@@ -5,12 +5,12 @@ Routers uses 2 interfaces, `eth1` for the clients and `eth0` for the switch.
 The `eth1` interface will not be configured with **GNS3**, since it doesn't have any ip address.
 |      hostname    | interfaces  |     IP       | gateway   |
 |------------------|-------------|--------------|-----------|
-|  host_aattali-1  |    eth1     | 22.10.0.2/24 | 22.10.0.1 |
-|  host_aattali-2  |    eth1     | 22.10.0.3/24 | 22.10.0.1 |
-| router_aattali-1 |    eth1     |              |           |
-| router_aattali-1 |    eth0     | 99.10.1.1/24 |           |
-| router_aattali-2 |    eth1     |              |           |
-| router_aattali-2 |    eth0     | 99.10.1.2/24 |           |
+| host-aattali-1   |    eth1     | 22.10.0.2/24 | 22.10.0.1 |
+| host-aattali-2   |    eth1     | 22.10.0.3/24 | 22.10.0.1 |
+| router-aattali-1 |    eth1     |              |           |
+| router-aattali-1 |    eth0     | 99.10.1.1/24 |           |
+| router-aattali-2 |    eth1     |              |           |
+| router-aattali-2 |    eth0     | 99.10.1.2/24 |           |
 
 > [!CAUTION]
 > When operating inside the **routers**, switch to `bash` to use a compliant `iptools2` cli.
