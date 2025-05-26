@@ -108,7 +108,7 @@ interface lo
 !
 ```
 #### BGP EVPN
-We have only one **peer**, which is our **RR** at `1.1.1.1`, so we are not going to use a **peer-groupe there**. We specify to the **EVPN** module that we want to advertise all of our **VNI**s (even if we only have one).
+We have only one **peer**, which is our **RR** at `1.1.1.1`, so we are not going to use a **peer-group there**. We specify to the **EVPN** module that we want to advertise all of our **VNI**s (even if we only have one).
 ```sh
 router bgp 8
     no bgp default ipv4-unicast
